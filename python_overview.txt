@@ -1,0 +1,45 @@
+SMS Server
+Overview
+Methods to listen and respond to SMS
+*SMS capable phone with server application
+*SMS phone with serial connection to computer with server application
+*Addon card for computer which participates with Phone network
+*Application server which listens on a web server providing one of the above
+*Application server which listens on an Email server, SMS are sent using an SMS->email gateway
+
+The phone availble to us was a Nokia n900 running the maemo operating system, a deriviatve of Debian GNU/Linux. Choice of programming language was limited by the authors to those available from the maemo distributions package manager: c, c++, bash, perl, and python. Python was chosen for three reasons: portability of code, available libraries, and ease of data structure expression. It is the third that separates bash from perl and Python, and the choice between perl and Python becomes a matter of preference.
+
+When the phone receives an SMS message, it sleeps for 1 sec (otherwise the phone carrier, AT&T, will not deliver the message due to rate limiting) then processes the message. The messages are processed as they travel through the phones subsystem, therefore if the sms++ daemon is not running when a message is received, it will not be processed.
+
+A separate machine was used to host both an Email Server and our application. Our application listens on it's assigned mailbox, and when a new email is received, it is marked as read and then processed.
+
+The same code is running on both platforms, save one small difference: in the interest of time a third-party program, "links" was used to render html pages to plaintext. The links binary was not available for maemo; a resource server was created to render the html remotely, where the links program was available. This web server runs alongside the email server.
+
+A set of commands are implemented:
+name | usage | description
+Navigation
+ help
+ prev
+ next
+ page
+Query
+ url
+ cal
+ mail
+
+The query commands perform http requests with certain paramters in order to fulfill the user's query. Some queries require credentials to complete, namely cal and mail.
+
+User Authentication
+Overview
+Methods
+* send username password with sms request
+* user stores username password in third-party database, indexed by sms handle (usually phone #)
+* user stores authentication token from target service in third-party databse indexed by sms handle
+
+The database was designed to use the phonenumber as the key, but it was found that this is not a reliable method; some phone carriers use anonymnizers, some users use applications that provide sms through a non-carrier service, and some carrier's sms-email gateways remove the phone number from incoming emails. In our limited testing, the two common handles were either the 10-digit phone number, or the username with the non-carrier service, or the username with the carrier.
+
+References
+Links
+Maemo repository
+SMS semi-binary format parser
+

@@ -1,0 +1,28 @@
+-- Intial database table setup for haphedral
+--
+-- Matti Kariluoma <matti@kariluo.ma> Feb 2012
+
+CREATE TABLE IF NOT EXISTS users 
+(
+	uid INTEGER UNSIGNED PRIMARY KEY,
+	name VARCHAR(64) DEFAULT '',
+	email VARCHAR(256) DEFAULT '',
+	password VARCHAR(256) DEFAULT ''
+);
+
+CREATE TABLE IF NOT EXISTS groups 
+(
+	uid INTEGER,
+	gid INTEGER,
+	PRIMARY KEY(uid, gid),
+	FOREIGN KEY(uid) REFERENCES users(uid) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS sessions 
+(
+	uid INTEGER UNIQUE,
+	pwd VARCHAR(64) DEFAULT '',
+	sid INTEGER PRIMARY KEY,
+	exp DATETIME,
+	FOREIGN KEY(uid) REFERENCES users(uid) ON UPDATE CASCADE ON DELETE CASCADE
+);
